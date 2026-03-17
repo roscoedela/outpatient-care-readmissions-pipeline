@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: healthcare_raw
+    description: Raw healthcare datasets loaded into Snowflake from CMS API and CSV files.
+    database: HEALTHCARE_DB
+    schema: RAW
+
+    tables:
+      - name: RAW_PHYSICIANS
+        description: Raw physician dataset pulled from the CMS API.
+
+      - name: RAW_READMISSIONS
+        description: Raw hospital readmissions dataset loaded from CSV.
+
+      - name: RAW_HCAHPS
+        description: Raw HCAHPS hospital patient experience dataset loaded from CSV.
