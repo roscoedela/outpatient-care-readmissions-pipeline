@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  - name: healthcare_raw
+    database: HEALTHCARE_DB
+    schema: RAW
+
+    tables:
+
+      - name: RAW_PHYSICIANS
+        description: Raw physician dataset from CMS API
+        columns:
+          - name: Rndrng_NPI
+            tests:
+              - not_null
+              - unique
+
+      - name: RAW_READMISSIONS
+        description: Hospital readmissions dataset
+        columns:
+          - name: Facility ID
+            tests:
+              - not_null
+
+      - name: RAW_HCAHPS
+        description: Patient experience survey dataset
+        columns:
+          - name: Facility ID
+            tests:
+              - not_null
