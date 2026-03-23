@@ -160,6 +160,21 @@ Some of the most important challenges in this project included:
 
 This was one of the most valuable parts of the project because it pushed me to think like both a data engineer and an analytics engineer. This also was a large set of data so it made me have to think of memory and effieciency more than other projects and tasks at work. 
 
+## Lessons Learned
+Raw tables should usually stay close to the source, and if the column names, formats, or structure are awkward, the staging layer is the right place to standardize them.
+
+I learned that relying on awkward raw column names makes downstream SQL and dbt models harder to maintain. When raw column references become brittle, renaming and standardizing them in staging is often the cleanest long-term solution.
+I learned that getting the SQL to run is not enough. Before comparing metrics, I had to understand the grain of each table and whether the measures were actually comparable at the level of analysis I wanted. A successful pipeline run does not automatically mean the analysis is correct. I had to distinguish between technical completion and analytical validity.
+
+How to Run the Project
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/roscoedela/outpatient-care-readmissions-pipeline.git
+cd outpatient-care-readmissions-pipeline
+
+
+
 ## Repository Structure
 
 ```bash
@@ -174,3 +189,10 @@ outpatient-care-readmissions-pipeline/
 ├── data/
 ├── tests/
 └── README.md
+
+How to Run the Project
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/roscoedela/outpatient-care-readmissions-pipeline.git
+cd outpatient-care-readmissions-pipeline
