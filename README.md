@@ -44,15 +44,22 @@ This project changed substantially as I worked through it.
 
 ### Phase 1: Pipeline Build
 I initially focused on getting the technical pipeline running end to end, including ingestion, validation, and orchestration.
+<img width="796" height="273" alt="Screenshot 2026-03-16 at 1 28 48 PM" src="https://github.com/user-attachments/assets/15d953af-8362-4aee-a102-01fc8e1fbf4a" />
+<img width="797" height="285" alt="readmissions_unique_states_numeric_summary" src="https://github.com/user-attachments/assets/afeda597-0975-4deb-bac3-f57beda3dba4" />
+
 
 ### Phase 2: Debugging and Reliability
-As the project developed, I ran into validation and execution issues that forced me to rethink pieces of the implementation. This stage made the project stronger by pushing me to focus on reliability, not just first-pass execution.
+As the project developed, I ran into validation and execution issues that forced me to rethink pieces of the implementation. This stage made the project stronger by pushing me to focus on reliability, not just first-pass execution. 
+<img width="764" height="489" alt="Screenshot 2026-03-17 at 9 15 47 AM" src="https://github.com/user-attachments/assets/b001e0c4-4708-41cf-adc2-55578bd6d26f" />
+<img width="796" height="553" alt="Screenshot 2026-03-17 at 9 15 30 AM" src="https://github.com/user-attachments/assets/f752057d-09bb-42bf-9b25-d0a09f262daf" />
 
 ### Phase 3: Data Understanding and Modeling
-Once the pipeline was more stable, my attention shifted to the data itself: table grain, join logic, metric definitions, and how sources such as readmissions, patient experience, and provider-related data should be connected and communicated. 
+Once the pipeline was more stable, my attention shifted to the data itself: table grain, join logic, metric definitions, and how sources such as readmissions, patient experience, and provider-related data should be connected and communicated. <img width="999" height="598" alt="Screenshot 2026-03-23 at 12 29 20 PM" src="https://github.com/user-attachments/assets/bcb7c9af-2b39-48ae-bf50-2bb029314bdf" />
+
 
 ### Phase 4: Analytics Framing
 The project then evolved from technical infrastructure into analytical storytelling. I began testing relationships between patient satisfaction, cost, ailments, risk score, and predicted readmission burden to identify useful patterns and possible business interpretations/solutions.
+<img width="1014" height="246" alt="Screenshot 2026-03-20 at 9 40 21 PM" src="https://github.com/user-attachments/assets/6316bacf-6274-49a4-9eb8-434d3d380cc5" />
 
 ### Phase 5: Dashboard and Communication
 Finally, I translated the analysis into Tableau so the pipeline outputs could be consumed visually and interpreted more easily by a stakeholder audience.
