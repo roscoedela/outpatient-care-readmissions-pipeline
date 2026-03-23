@@ -52,6 +52,10 @@ I initially focused on getting the technical pipeline running end to end, includ
 As the project developed, I ran into validation and execution issues that forced me to rethink pieces of the implementation. This stage made the project stronger by pushing me to focus on reliability, not just first-pass execution. 
 <img width="764" height="489" alt="Screenshot 2026-03-17 at 9 15 47 AM" src="https://github.com/user-attachments/assets/b001e0c4-4708-41cf-adc2-55578bd6d26f" />
 <img width="796" height="553" alt="Screenshot 2026-03-17 at 9 15 30 AM" src="https://github.com/user-attachments/assets/f752057d-09bb-42bf-9b25-d0a09f262daf" />
+<img width="1378" height="781" alt="Screenshot 2026-03-17 at 8 23 57 PM" src="https://github.com/user-attachments/assets/45c992ca-a117-443f-ae5f-4e92b36bdb6c" />
+<img width="932" height="507" alt="Screenshot 2026-03-17 at 8 23 29 PM" src="https://github.com/user-attachments/assets/1271e745-6b9c-4c1e-b7eb-6877f7ea8de4" />
+<img width="1166" height="625" alt="Screenshot 2026-03-17 at 7 18 16 PM" src="https://github.com/user-attachments/assets/f1d57222-78b6-4c5c-bf71-38c8a9f983a5" />
+
 
 ### Phase 3: Data Understanding and Modeling
 Once the pipeline was more stable, my attention shifted to the data itself: table grain, join logic, metric definitions, and how sources such as readmissions, patient experience, and provider-related data should be connected and communicated. <img width="999" height="598" alt="Screenshot 2026-03-23 at 12 29 20 PM" src="https://github.com/user-attachments/assets/bcb7c9af-2b39-48ae-bf50-2bb029314bdf" />
