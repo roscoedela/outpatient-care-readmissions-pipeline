@@ -53,9 +53,9 @@ As the project developed, I ran into validation and execution issues that forced
 <img width="764" height="489" alt="Screenshot 2026-03-17 at 9 15 47 AM" src="https://github.com/user-attachments/assets/b001e0c4-4708-41cf-adc2-55578bd6d26f" />
 <img width="796" height="553" alt="Screenshot 2026-03-17 at 9 15 30 AM" src="https://github.com/user-attachments/assets/f752057d-09bb-42bf-9b25-d0a09f262daf" />
 <img width="1378" height="781" alt="Screenshot 2026-03-17 at 8 23 57 PM" src="https://github.com/user-attachments/assets/45c992ca-a117-443f-ae5f-4e92b36bdb6c" />
+<img width="1166" height="625" alt="Screenshot 2026-03-17 at 7 18 16 PM" src="https://github.com/user-attachments/assets/f1d57222-78b6-4c5c-bf71-38c8a9f983a5" />
 <img width="819" height="666" alt="airflow_dag_green" src="https://github.com/user-attachments/assets/106e4a8b-e0ee-41aa-b55b-c9efc0417639" />
 
-<img width="1166" height="625" alt="Screenshot 2026-03-17 at 7 18 16 PM" src="https://github.com/user-attachments/assets/f1d57222-78b6-4c5c-bf71-38c8a9f983a5" />
 
 
 ### Phase 3: Data Understanding and Modeling
@@ -110,7 +110,7 @@ The project follows a staged analytics engineering workflow:
 5. Aggregate state level metrics for dashboard consumption
 6. Load final outputs into Tableau for visualization and interpretation
 
-A major part of the project involved moving from raw technical execution into clearer metric definitions and business ready outputs and thinking downstream as I am planning on expanding ob this with more quality of life
+A major part of the project involved moving from raw technical execution into clearer metric definitions and business ready outputs and thinking downstream as I am planning on expanding this with more quality of life measures. 
 
 ## Tableau Dashboard Design
 
