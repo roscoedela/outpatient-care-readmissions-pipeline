@@ -172,7 +172,32 @@ How to Run the Project
 ```bash
 git clone https://github.com/roscoedela/outpatient-care-readmissions-pipeline.git
 cd outpatient-care-readmissions-pipeline
+##Make sure you have all of the technical requirements:
 
+Python
+Docker
+Airflow
+dbt
+Snowflake access
+Tableau Desktop or Tableau Public for the dashboard layer
+
+## Virtual Environment
+python -m venv .venv
+source .venv/bin/activate
+
+##Install Dependencies
+pip install -r requirements.txt
+
+Configure credentials and environment variables
+
+Before running the pipeline, configure any required credentials such as:
+
+Snowflake connection details
+dbt profile settings
+Airflow environment variables
+any local file paths needed for source datasets
+
+Make sure the source healthcare files are placed in the expected project directories before running ingestion.
 
 
 ## Repository Structure
