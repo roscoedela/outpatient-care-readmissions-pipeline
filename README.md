@@ -166,12 +166,25 @@ Raw tables should usually stay close to the source, and if the column names, for
 I learned that relying on awkward raw column names makes downstream SQL and dbt models harder to maintain. When raw column references become brittle, renaming and standardizing them in staging is often the cleanest long-term solution.
 I learned that getting the SQL to run is not enough. Before comparing metrics, I had to understand the grain of each table and whether the measures were actually comparable at the level of analysis I wanted. A successful pipeline run does not automatically mean the analysis is correct. I had to distinguish between technical completion and analytical validity.
 
-How to Run the Project
-
+## How to Run the Project
 ### 1. Clone the repository
+
 ```bash
 git clone https://github.com/roscoedela/outpatient-care-readmissions-pipeline.git
 cd outpatient-care-readmissions-pipeline
+```
+### 2. Set up a virtual environment
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
 ##Make sure you have all of the technical requirements:
 
 Python
@@ -185,20 +198,19 @@ Tableau Desktop or Tableau Public for the dashboard layer
 python -m venv .venv
 source .venv/bin/activate
 
-##Install Dependencies
+## Install Dependencies
 pip install -r requirements.txt
 
-Configure credentials and environment variables
+### 4. Confirm required tools and access
 
-Before running the pipeline, configure any required credentials such as:
+Before running the project, make sure you have:
 
-Snowflake connection details
-dbt profile settings
-Airflow environment variables
-any local file paths needed for source datasets
-
-Make sure the source healthcare files are placed in the expected project directories before running ingestion.
-
+- Python
+- Docker
+- Airflow
+- dbt
+- Snowflake access
+- Tableau Public or Tableau Desktop
 
 ## Repository Structure
 
@@ -214,10 +226,3 @@ outpatient-care-readmissions-pipeline/
 ├── data/
 ├── tests/
 └── README.md
-
-How to Run the Project
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/roscoedela/outpatient-care-readmissions-pipeline.git
-cd outpatient-care-readmissions-pipeline
