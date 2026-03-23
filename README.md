@@ -64,6 +64,11 @@ The project then evolved from technical infrastructure into analytical storytell
 ### Phase 5: Dashboard and Communication
 Finally, I translated the analysis into Tableau so the pipeline outputs could be consumed visually and interpreted more easily by a stakeholder audience.
 
+<img width="1293" height="1080" alt="Screenshot 2026-03-22 at 3 20 55 PM" src="https://github.com/user-attachments/assets/95962a17-08e4-40c6-8ae3-993c9bd77948" />
+Interactive Dashboard:
+
+https://public.tableau.com/app/profile/rooscol.rozambert/viz/HealthcareReadmissionsDashboard_17741121167600/Dashboard1
+
 ## Tech Stack
 
 - Python
