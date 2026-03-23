@@ -90,26 +90,31 @@ This project combines multiple healthcare-related datasets to support readmissio
 
 ### Readmissions Data
 Used as the central outcome oriented dataset for comparing predicted readmission rates across states.
+https://data.cms.gov/provider-data/dataset/9n3s-kdb3
 
 ### Patient Experience / Survey Data
-Used to bring in average patient survey star ratings and better understand how patient experience relates to readmissions.
+Used to bring in average patient survey star ratings and better understand how patient experience relates to readmissions. 
+https://data.cms.gov/provider-data/dataset/dgck-syfz
 
 ### Risk and Cost Metrics
 Used to compare average risk burden and cost per patient across states.
 
 ### Provider / Healthcare Context Data
 Used to support broader modeling, joins, and interpretation throughout the project workflow.
+https://data.cms.gov/provider-summary-by-type-of-service/medicare-physician-other-practitioners/medicare-physician-other-practitioners-by-provider-and-service/data
 
 ## Pipeline and Transformation Workflow
 
 The project follows a staged analytics engineering workflow:
 
-1. Ingest raw healthcare source data from government websites
-2. Validate source quality and expected structure
-3. Run transformation logic to clean and standardize fields
-4. Join data into analysis ready outputs
-5. Aggregate state level metrics for dashboard consumption
-6. Load final outputs into Tableau for visualization and interpretation
+- Ingest raw healthcare data into Snowflake
+- Validate source quality and build Airflow orchestration
+- Run dbt staging and marts to create analysis-ready tables
+- Debug transformation and testing issues until the workflow ran reliably
+- Clarify table grain, joins, and metric definitions
+- Build a state-level summary model for downstream analysis
+- Test relationships between readmission, risk, satisfaction, services, and cost
+- Translate the findings into a Tableau dashboard
 
 A major part of the project involved moving from raw technical execution into clearer metric definitions and business ready outputs and thinking downstream as I am planning on expanding this with more quality of life measures. 
 
