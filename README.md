@@ -120,6 +120,8 @@ A major part of the project involved moving from raw technical execution into cl
 
 ## Tableau Dashboard Design
 
+Link to dashboard: https://public.tableau.com/app/profile/rooscol.rozambert/viz/HealthcareReadmissionsDashboard_17741121167600/Dashboard1
+
 The Tableau dashboard was designed around a few core analytical views:
 
 ### Geographic Overview
