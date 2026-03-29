@@ -50,6 +50,10 @@ I initially focused on getting the technical pipeline running end to end, includ
 
 ### Phase 2: Debugging and Reliability
 As the project developed, I ran into validation and execution issues that forced me to rethink pieces of the implementation. This stage made the project stronger by pushing me to focus on reliability, not just first-pass execution. 
+
+First, creating the tests and schema yaml was paramount. After a few failures, seeing that certain columns and models couldn't be tested the same helped these pass 
+<img width="1171" height="582" alt="Screenshot 2026-03-29 at 12 00 37 PM" src="https://github.com/user-attachments/assets/0a0eee9f-6934-4234-978a-8b4cc6a70815" />
+
 <img width="764" height="489" alt="Screenshot 2026-03-17 at 9 15 47 AM" src="https://github.com/user-attachments/assets/b001e0c4-4708-41cf-adc2-55578bd6d26f" />
 <img width="796" height="553" alt="Screenshot 2026-03-17 at 9 15 30 AM" src="https://github.com/user-attachments/assets/f752057d-09bb-42bf-9b25-d0a09f262daf" />
 <img width="1378" height="781" alt="Screenshot 2026-03-17 at 8 23 57 PM" src="https://github.com/user-attachments/assets/45c992ca-a117-443f-ae5f-4e92b36bdb6c" />
