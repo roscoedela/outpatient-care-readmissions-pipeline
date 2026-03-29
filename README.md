@@ -54,6 +54,10 @@ As the project developed, I ran into validation and execution issues that forced
 First, creating the tests and schema yaml was paramount. After a few failures, seeing that certain columns and models couldn't be tested the same helped these pass 
 <img width="1088" height="528" alt="Screenshot 2026-03-29 at 12 38 40 PM" src="https://github.com/user-attachments/assets/33881bab-535b-485e-9e25-c27ee059a65a" />
 
+As well as in the marts:
+<img width="1062" height="385" alt="Screenshot 2026-03-29 at 1 04 38 PM" src="https://github.com/user-attachments/assets/29c8a905-2ece-44f2-87d4-9d42ba4f0b2e" />
+
+
 <img width="796" height="553" alt="Screenshot 2026-03-17 at 9 15 30 AM" src="https://github.com/user-attachments/assets/f752057d-09bb-42bf-9b25-d0a09f262daf" />
 <img width="764" height="489" alt="Screenshot 2026-03-17 at 9 15 47 AM" src="https://github.com/user-attachments/assets/b001e0c4-4708-41cf-adc2-55578bd6d26f" />
 <img width="1378" height="781" alt="Screenshot 2026-03-17 at 8 23 57 PM" src="https://github.com/user-attachments/assets/45c992ca-a117-443f-ae5f-4e92b36bdb6c" />
