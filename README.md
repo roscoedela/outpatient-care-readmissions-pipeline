@@ -21,7 +21,9 @@ This project was designed to show both the technical pipeline required to suppor
 
 ## Final Dashboard
 
-The final Tableau dashboard, **State Level Readmissions and Patient Experience Dashboard**, presents:
+https://public.tableau.com/app/profile/rooscol.rozambert/viz/HealthcareReadmissionsDashboard_17741121167600/Dashboard1
+
+The final Tableau dashboard, **Healthcare Readmissions Dashboard**, presents:
 
 - A U.S. map highlighting where predicted readmission rates are highest
 - A Top 10 states ranking by average predicted readmission rate
