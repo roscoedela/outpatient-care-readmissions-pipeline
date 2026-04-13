@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: mart_state_healthcare_summary
+    description: State-level summary table combining physician utilization, hospital readmissions, and HCAHPS patient experience metrics.
+    columns:
+      - name: state_code
+        tests:
+          - not_null
+          - unique
+
+  - name: mart_hospital_quality
+    description: Hospital-level summary combining readmissions and HCAHPS patient experience metrics.
+    columns:
+      - name: facility_id
+        tests:
+          - not_null
+          - unique

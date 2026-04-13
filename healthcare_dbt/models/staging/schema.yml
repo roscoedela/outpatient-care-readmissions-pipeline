@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: stg_physicians
+    description: Cleaned staging model for CMS physician data.
+    columns:
+      - name: rendering_npi
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_readmissions
+    description: Cleaned staging model for hospital readmissions data.
+    columns:
+      - name: facility_id
+        tests:
+          - not_null
+
+  - name: stg_hcahps
+    description: Cleaned staging model for HCAHPS patient experience data.
+    columns:
+      - name: facility_id
+        tests:
+          - not_null
