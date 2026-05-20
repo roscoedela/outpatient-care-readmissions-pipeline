@@ -1,3 +1,10 @@
+{{
+    config(
+        materialized='incremental',
+        unique_key='state_code'
+    )
+}}
+
 with physicians_by_state as (
 
     select
@@ -8,6 +15,9 @@ with physicians_by_state as (
         avg(try_to_double(beneficiary_avg_risk_score::varchar)) as avg_beneficiary_risk_score
     from {{ ref('stg_physicians') }}
     where state_code is not null
+    {% if is_incremental() %}
+        and state_code not in (select state_code from {{ this }})
+    {% endif %}
     group by state_code
 
 ),
@@ -22,6 +32,9 @@ readmissions_by_state as (
         sum(try_to_double(number_of_discharges::varchar)) as total_discharges
     from {{ ref('stg_readmissions') }}
     where state_code is not null
+    {% if is_incremental() %}
+        and state_code not in (select state_code from {{ this }})
+    {% endif %}
     group by state_code
 
 ),
@@ -35,6 +48,9 @@ hcahps_by_state as (
         sum(try_to_double(number_of_completed_surveys::varchar)) as total_completed_surveys
     from {{ ref('stg_hcahps') }}
     where state_code is not null
+    {% if is_incremental() %}
+        and state_code not in (select state_code from {{ this }})
+    {% endif %}
     group by state_code
 
 )
