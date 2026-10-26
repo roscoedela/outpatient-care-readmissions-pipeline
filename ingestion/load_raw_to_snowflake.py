@@ -3,7 +3,10 @@ from pathlib import Path
 import pandas as pd
 import snowflake.connector
 from snowflake.connector.pandas_tools import write_pandas
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 
@@ -32,12 +35,12 @@ def connect_to_snowflake():
     log("Connecting to Snowflake...")
 
     conn = snowflake.connector.connect(
-        user="ROSCOEDELA",
-        password="ErinJonesFrankJones95!",
-        account="QQQVDBF-XC19320",
-        warehouse="COMPUTE_WH",
-        database="HEALTHCARE_DB",
-        schema="RAW",
+        user=os.environ["SNOWFLAKE_USER"],
+        password=os.environ["SNOWFLAKE_PASSWORD"],
+        account=os.environ["SNOWFLAKE_ACCOUNT"],
+        warehouse=os.environ.get("SNOWFLAKE_WAREHOUSE", "COMPUTE_WH"),
+        database=os.environ.get("SNOWFLAKE_DATABASE", "HEALTHCARE_DB"),
+        schema=os.environ.get("SNOWFLAKE_SCHEMA", "RAW"),
     )
 
     cursor = conn.cursor()
