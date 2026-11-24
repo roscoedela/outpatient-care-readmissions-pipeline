@@ -1,6 +1,6 @@
 # Outpatient Care Readmissions Pipeline
 
-An end-to-end analytics engineering project that ingests, validates, transforms, and analyzes outpatient care, patient experience, and readmissions-related data, with a final Tableau dashboard used to surface state-level patterns in predicted readmission rates, risk burden, cost pressure, and patient satisfaction.
+An end-to-end analytics engineering project that ingests, validates, transforms, and analyzes outpatient care, patient experience, and readmissions-related data, with a final Tableau dashboard used to surface state-level patterns in predicted readmission rates, risk burden, cost pressure, and patient satisfaction. The pipeline also powers an AI layer: a RAG copilot that answers questions about the data, and a voice agent that answers those questions out loud in Haitian Creole.
 
 ## Overview
 
@@ -10,7 +10,7 @@ The final output is a state-level dashboard exploring how predicted readmission 
 
 ## Business Problem
 
-Healthcare stakeholders need trustworthy, analysis ready data to understand patterns tied to patient outcomes and care experience. I personally started this wondering "Where are the places in America that people are happy within their provider system?".In this project, I explored how readmissions related metrics, patient satisfaction, and cost/risk indicators could be combined to answer questions such as:
+Healthcare stakeholders need trustworthy, analysis ready data to understand patterns tied to patient outcomes and care experience. I personally started this wondering "Where are the places in America that people are happy within their provider system?" In this project, I explored how readmissions related metrics, patient satisfaction, and cost/risk indicators could be combined to answer questions such as:
 
 - Which states show the highest predicted readmission rates?
 - Is higher patient risk associated with higher readmission rates?
@@ -85,14 +85,19 @@ Interactive Dashboard:
 
 https://public.tableau.com/app/profile/rooscol.rozambert/viz/HealthcareReadmissionsDashboard_17741121167600/Dashboard1
 
+### Phase 6: AI Copilot
+With the state-level tables in place, I added a retrieval augmented generation (RAG) copilot so stakeholders can ask questions in plain English instead of reading the dashboard. See [AI Layer](#ai-layer).
+
+### Phase 7: Voice Agent in Haitian Creole
+I then connected the copilot to an ElevenLabs voice agent through an authenticated API, so the same data can be queried by voice in Haitian Creole. See [Voice Agent in Haitian Creole](#voice-agent-in-haitian-creole-elevenlabs).
+
 ## Tech Stack
 
-- Python
-- SQL
-- Airflow
-- Docker
-- Tableau
-- GitHub
+- **Pipeline:** Python, SQL, Snowflake, dbt, Airflow, Docker
+- **Analytics:** Tableau
+- **AI layer:** LangChain, FAISS, OpenAI GPT-4o-mini, Streamlit
+- **Voice agent:** ElevenLabs Agents, FastAPI, ngrok
+- **Tooling:** GitHub
 
 ## Data Sources
 
@@ -149,6 +154,115 @@ A second scatterplot shows the inverse relationship between patient satisfaction
 ### Narrative Interpretation
 A written text block summarizes patterns, likely drivers, and meaningful outliers such as New Jersey, Utah, Alaska, or other states depending on the cut and interpretation.
 
+## AI Layer
+
+### RAG Copilot (Streamlit)
+
+`healthcare-copilot/` contains a chat interface over the state-level outputs of the pipeline.
+
+- `ingest.py` turns the state-level tables into documents and builds a FAISS index using OpenAI `text-embedding-3-small`
+- `app.py` is a Streamlit chat app that retrieves the 6 most relevant chunks (k=6) and answers with GPT-4o-mini at temperature 0.2, citing the states and sources it used
+- Suggested questions cover cancer rate anomalies, high cost with low satisfaction, readmission drivers, and out-of-pocket costs
+
+### Voice Agent in Haitian Creole (ElevenLabs)
+
+<!-- Demo video link goes here -->
+
+An ElevenLabs voice agent that answers questions about CMS Medicare outpatient data **out loud, in Haitian Creole (Kreyòl ayisyen)**. The agent does not hold any data itself. It calls this pipeline through a small authenticated API, so every answer comes from the same dbt modeled data and RAG copilot that power the Streamlit app.
+
+#### Why
+
+Haitian Creole speakers are a large patient population in the US, and most healthcare voice AI only works well in English. This project tests whether a voice agent can be pointed at a real healthcare data pipeline and serve a language that the platform does not officially support.
+
+#### Architecture
+
+```mermaid
+flowchart LR
+    U["User speaks Kreyòl"] --> A["ElevenLabs agent<br/>(speech to text, LLM, French voice)"]
+    A -- "webhook tool<br/>POST /ask, bearer token<br/>question in English" --> API["FastAPI<br/>healthcare-copilot/api.py"]
+    API --> R["RAG copilot<br/>FAISS (k=6) + GPT-4o-mini"]
+    R --> D["CMS Medicare data<br/>dbt + Snowflake pipeline"]
+    API -- "answer + sources" --> A
+    A --> U2["Spoken answer in Kreyòl"]
+```
+
+1. The user asks a question by voice in Creole.
+2. The agent decides the question needs data and calls the `query_readmissions_data` webhook tool, translating the question into English (the FAISS index and source data are in English).
+3. `api.py` runs the same retrieval chain as the Streamlit app, with a prompt tuned for speech: 2 to 4 short sentences, specific states and numbers, and an explicit "say so if the data does not contain the answer, never invent numbers."
+4. The API returns the answer plus the retrieved sources, and the agent speaks it back in Creole.
+
+The language handling lives entirely in the agent layer. The data pipeline stays unchanged and only ever sees English.
+
+#### Language support findings
+
+| Finding | Detail |
+|---|---|
+| Creole is not in the agent language list | ElevenLabs agents do not list Haitian Creole as a supported language. |
+| Workaround | Agent language set to **French**, a French voice (Hugo), and a system prompt instructing the LLM to always reply in Kreyòl, never French or English. |
+| Speech output | Natural, easily understood Creole. As a Creole speaker, I found the French accent a good fit given how close the languages are. |
+| Speech to text | Spoken Creole is often **transcribed as French** (for example "dépenses" for "depans"). The LLM still recovered the intent, and when it was unsure it asked a clarifying question in Creole instead of guessing. |
+| Safety behavior | When the tool was failing during setup, the agent told the user it could not reach the data instead of making up numbers. |
+
+#### Example exchange
+
+> **User (spoken Creole):** asks which states have high costs but low patient satisfaction
+>
+> **Agent:** *"Eta ki gen pi gwo depans pou chak pasyan se Nevada, ak kat san wit dola pou chak pasyan. Washington D.C. vini jis apre ak de san katreven senk dola."*
+>
+> (The state with the highest cost per patient is Nevada, at $408 per patient. Washington D.C. comes right after at $285.)
+
+Accuracy of these answers is being checked against the dbt marts directly (see Known limitations).
+
+#### API
+
+`POST /ask` (in `healthcare-copilot/api.py`)
+
+```bash
+curl -X POST https://<host>/ask \
+  -H "Authorization: Bearer $TOOL_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"question": "Which states have high cost but low satisfaction?"}'
+```
+
+```json
+{
+  "answer": "Delaware has a high cost per patient of 289.13 USD and a patient satisfaction star rating of 3.42 out of 5. ...",
+  "sources": ["Delaware · Physician State Metrics", "Wyoming · State Healthcare Analysis", "..."]
+}
+```
+
+`GET /health` returns `{"status": "ok"}`.
+
+**Security:** requests must carry a bearer token (`TOOL_TOKEN`), compared in constant time. The token and the OpenAI key are read from environment variables and are never committed. In ElevenLabs, the `Authorization` header is stored as a workspace secret, not as plain text in the tool config.
+
+#### Run it locally
+
+```bash
+cd healthcare-copilot
+pip install fastapi uvicorn
+# .env needs OPENAI_API_KEY and TOOL_TOKEN
+python -c "import secrets; print(secrets.token_urlsafe(32))"   # generate TOOL_TOKEN
+uvicorn api:app --reload --port 8000
+ngrok http 8000 --url <your-static-ngrok-domain>   # expose it to the ElevenLabs webhook tool
+```
+
+The ngrok inspector at `http://127.0.0.1:4040` shows every call the agent makes, which made debugging the webhook (including a 401 from mismatched tokens) straightforward.
+
+#### Known limitations
+
+- **Ranking questions.** Retrieval pulls the top 6 chunks, so "which state is highest" questions only compare the states that were retrieved, not all 50. RAG is the wrong tool for aggregate rankings.
+- **Speech to text** treats spoken Creole as French, so transcripts are not accurate Creole even when the answer is correct.
+- **Hosting.** The API currently runs locally behind ngrok, so the agent only works while it is running.
+- **Not medical advice.** The agent answers questions about aggregate public CMS data only. It uses no patient data and does not diagnose.
+
+#### Next
+
+- [ ] Evaluation set: about 15 to 20 questions in English and Creole, scored against values computed directly from the dbt marts
+- [ ] Deploy the API to Cloud Run with Terraform (Artifact Registry, Secret Manager, least-privilege service account, scale to zero)
+- [ ] Add a SQL tool for ranking and aggregate questions, keeping RAG for explanations
+- [ ] Post-discharge check-in agent in Creole whose structured call data lands in the dbt models
+- [ ] Test with additional native Creole speakers
+
 ## Key Findings
 
 This project produced several directional findings:
@@ -170,7 +284,7 @@ Some of the most important challenges in this project included:
 - Interpreting healthcare metrics carefully enough to avoid misleading comparisons
 - Translating a technically complex workflow into a clean dashboard and story
 
-This was one of the most valuable parts of the project because it pushed me to think like both a data engineer and an analytics engineer. This also was a large set of data so it made me have to think of memory and effieciency more than other projects and tasks at work. 
+This was one of the most valuable parts of the project because it pushed me to think like both a data engineer and an analytics engineer. This also was a large set of data so it made me have to think of memory and efficiency more than other projects and tasks at work. 
 
 ## Lessons Learned
 Raw tables should usually stay close to the source, and if the column names, formats, or structure are awkward, the staging layer is the right place to standardize them.
@@ -197,22 +311,6 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-##Make sure you have all of the technical requirements:
-
-Python
-Docker
-Airflow
-dbt
-Snowflake access
-Tableau Desktop or Tableau Public for the dashboard layer
-
-## Virtual Environment
-python -m venv .venv
-source .venv/bin/activate
-
-## Install Dependencies
-pip install -r requirements.txt
-
 ### 4. Confirm required tools and access
 
 Before running the project, make sure you have:
@@ -223,18 +321,37 @@ Before running the project, make sure you have:
 - dbt
 - Snowflake access
 - Tableau Public or Tableau Desktop
+- An OpenAI API key (for the copilot and voice agent API)
+
+### 5. Run the copilot
+
+```bash
+cd healthcare-copilot
+python ingest.py          # builds the FAISS index
+streamlit run app.py
+```
+
+To run the voice agent API, see [Run it locally](#run-it-locally).
 
 ## Repository Structure
 
 ```bash
 outpatient-care-readmissions-pipeline/
-├── dags/
-├── ingestion/
-├── transformations/
+├── airflow/              # Airflow configuration
+├── dags/                 # pipeline DAGs
+├── ingestion/            # fetch, validate, and load raw data to Snowflake
+├── dbt/                  # dbt project
+├── healthcare_dbt/       # dbt staging and marts models
+├── data_quality/         # source validation
+├── healthcare-copilot/
+│   ├── ingest.py         # builds the FAISS index
+│   ├── app.py            # Streamlit RAG copilot
+│   ├── api.py            # FastAPI endpoint for the ElevenLabs voice agent
+│   └── faiss_index/
+├── diagrams/             # ERD and architecture diagrams
 ├── docs/
-│   └── screenshots/
-├── tableau/
-├── notebooks/
-├── data/
+├── scripts/
 ├── tests/
+├── Dockerfile
 └── README.md
+```
